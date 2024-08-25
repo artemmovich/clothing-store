@@ -1,0 +1,94 @@
+// Contacts.scss
+
+.contacts {
+   padding: 40px 20px;
+   background-color: #a7ecb2;
+
+   .container {
+      max-width: 1200px;
+      margin: 0 auto;
+   }
+
+   &__title {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      color: #333;
+      text-align: center;
+   }
+
+   &__info {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-bottom: 40px;
+   }
+
+   &__info-item {
+      background-color: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      flex: 1 1 45%;
+      margin: 10px;
+      text-align: center;
+
+      &-title {
+         font-size: 1.5rem;
+         margin-bottom: 10px;
+         color: #4caf50;
+      }
+
+      &-detail {
+         font-size: 1rem;
+         color: #666;
+      }
+   }
+
+   &__form {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      max-width: 600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+
+      &-title {
+         font-size: 1.8rem;
+         margin-bottom: 20px;
+         color: #333;
+         text-align: center;
+      }
+
+      &-input,
+      &-textarea {
+         width: 100%;
+         padding: 15px;
+         margin-bottom: 20px;
+         border: 1px solid #ccc;
+         border-radius: 5px;
+         font-size: 1rem;
+      }
+
+      &-textarea {
+         height: 150px;
+         resize: none;
+      }
+
+      &-button {
+         background-color: #4caf50;
+         color: white;
+         padding: 15px;
+         border: none;
+         border-radius: 5px;
+         font-size: 1.2rem;
+         cursor: pointer;
+         transition: background-color 0.3s;
+
+         &:hover {
+            background-color: #45a049;
+         }
+      }
+   }
+}
