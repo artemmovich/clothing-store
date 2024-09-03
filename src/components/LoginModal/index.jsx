@@ -2,8 +2,6 @@ import React from 'react';
 import './index.scss';
 
 const LoginModal = ({ isOpen, onClose }) => {
-  if (!isOpen) return null;
-
   return (
     <div className="login-modal__overlay">
       <div className="login-modal__content">

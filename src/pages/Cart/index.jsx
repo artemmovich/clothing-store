@@ -1,32 +1,16 @@
-// components/Cart.js
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { removeItemFromCart, increaseItemQuantity, decreaseItemQuantity, clearCart } from '../../store/reducers/cartSlice';
 import './index.scss';
-import EmptyCart from "../../assets/img/EmptyCart.jpg";
+import EmptyCart from "../../assets/img/emptyCart.jpg";
 
 export const Cart = () => {
-   const cartItems = useSelector((state) => state.cart.items);
-   const totalPrice = useSelector((state) => state.cart.totalPrice);
+   const { items: cartItems, totalPrice } = useSelector(({ cart }) => cart);
    const dispatch = useDispatch();
-   
-   const increaseQuantityHandler = (id) => {
-      dispatch(increaseItemQuantity(id));
-   };
 
-   const decreaseQuantityHandler = (id) => {
-      dispatch(decreaseItemQuantity(id));
-   };
-
-   const removeItemHandler = (id) => {
-      dispatch(removeItemFromCart(id));
-   };
-
-   const clearCartHandler = () => {
-      dispatch(clearCart());
-   };
-
-  
+   const formatPrice = (price) => {
+      return typeof price === 'number' ? price.toFixed(2) : '0.00';
+   };  
 
    return (
       <div className="cart">
@@ -39,36 +23,30 @@ export const Cart = () => {
                   <p>Add something to make me happy :)</p>
                </div>
             ) : (
-               <div>
-                  <div className="cart__items-container">
-                     <ul className="cart__items">
-                        {cartItems.map((item) => {
-                           
+               <div className="cart__items-container">
+                  <ul className="cart__items">
+                     {cartItems.map(({ id, image, title, quantity, totalPrice }) => (
+                        <li key={id} className="cart__item">
+                           <img src={image} alt={title} className="cart__item-image" />
+                           <div className="cart__item-details">
+                              <h3 className="cart__item-title">{title}</h3>
+                              <div className="cart__item-quantity">
+                                 <button onClick={() => dispatch(decreaseItemQuantity(id))} disabled={quantity === 1}>-</button>
+                                 <span>{quantity}</span>
+                                 <button onClick={() => dispatch(increaseItemQuantity(id))}>+</button>
+                              </div>
+                              <p className="cart__item-price">${formatPrice(totalPrice)}</p>
+                              <button className="cart__item-remove" onClick={() => dispatch(removeItemFromCart(id))}>
+                                 Remove
+                              </button>
+                           </div>
+                        </li>
+                     ))}
+                  </ul>
 
-                           return (
-                              <li key={item.id} className="cart__item">
-                                 <img src={item.image} alt={item.title} className="cart__item-image" />
-                                 <div className="cart__item-details">
-                                    <h3 className="cart__item-title">{item.title}</h3>
-                                    <div className="cart__item-quantity">
-                                       <button onClick={() => decreaseQuantityHandler(item.id)}>-</button>
-                                       <span>{item.quantity}</span>
-                                       <button onClick={() => increaseQuantityHandler(item.id)}>+</button>
-                                    </div>
-                                    <p className="cart__item-price">${item.totalPrice.toFixed(2)}</p>
-                                    <button className="cart__item-remove" onClick={() => removeItemHandler(item.id)}>
-                                       Remove
-                                    </button>
-                                 </div>
-                              </li>
-                           );
-                        })}
-                     </ul>
-
-                     <div className="cart__total">
-                        <h3>Total: ${totalPrice.toFixed(2)}</h3>
-                        <button className="cart__clear" onClick={clearCartHandler}>Clear Cart</button>
-                     </div>
+                  <div className="cart__total">
+                     <h3>Total: ${formatPrice(totalPrice)}</h3>
+                     <button className="cart__clear" onClick={() => dispatch(clearCart())}>Clear Cart</button>
                   </div>
                </div>
             )}

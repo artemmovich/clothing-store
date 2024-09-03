@@ -1,4 +1,3 @@
-// pages/Shop.js
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProducts } from '../../store/reducers/productsSlice';
@@ -8,24 +7,11 @@ import LoadingSpinner from '../../components/LoadingSpinner';
 
 export const Shop = () => {
    const dispatch = useDispatch();
-   const products = useSelector((state) => state.products.items);
-   const status = useSelector((state) => state.products.status);
-   const error = useSelector((state) => state.products.error);
-   const loading = useSelector((state) => state.products.loading);
+   const {items,  loading} = useSelector((state) => state.products);
 
    useEffect(() => {
-      if (status === 'idle') {
-         dispatch(fetchProducts());
-      }
-   }, [status, dispatch]);
-
-   if (status === 'loading') {
-      return <div>Loading...</div>;
-   }
-
-   if (status === 'failed') {
-      return <div>Error: {error}</div>;
-   }
+    dispatch(fetchProducts());
+   }, [dispatch]);
 
    return (
       <div className="shop">
@@ -34,15 +20,16 @@ export const Shop = () => {
           <LoadingSpinner />
         ) : (
           <div className="shop__items">
-            {products.map((product) => (
-              <ShopItem key={product.id} product={product} />
-            ))}
+            {Array.isArray(items) && items.length > 0 ? (
+              items.map((product) => (
+                <ShopItem key={product.id} product={product} />
+              ))
+            ) : (
+              <p>No products available.</p>
+            )}
           </div>
         )}
       </div>
     </div>
   );
 };
-
-
-

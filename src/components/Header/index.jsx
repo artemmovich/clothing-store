@@ -9,24 +9,23 @@ import { useSelector } from 'react-redux';
 
 export const Header = () => {
    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
-   const totalQuantity = useSelector((state) => state.cart.totalQuantity);
-   const handleLoginClick = () => {
-      setIsLoginModalOpen(true);
-   };
+   const { totalQuantity } = useSelector((state) => state.cart);
+   
+   const handleLoginToggle = () => setIsLoginModalOpen(!isLoginModalOpen);
+
    const [menuOpen, setMenuOpen] = useState(false);
 
-   const toggleMenu = () => {
-      setMenuOpen(!menuOpen);
-   };
+   const toggleMenu = () => setMenuOpen(!menuOpen);
 
    const closeNav = () => {
       setMenuOpen(false);
    };
+
    const handleCloseModal = () => {
       setIsLoginModalOpen(false);
    };
-   return (
 
+   return (
       <header className='header'>
          <div className="container">
             <div className="header__wrapper">
@@ -52,11 +51,11 @@ export const Header = () => {
                      <img onClick={closeNav} className='header__cart' src={headerCart} alt="Cart" />
                      <span className="header__cart-count">{totalQuantity}</span>
                   </Link>
-                  <button onClick={handleLoginClick}>Login</button>
+                  <button onClick={handleLoginToggle}>Login</button>
                </div>
             </div>
          </div>
-         <LoginModal isOpen={isLoginModalOpen} onClose={handleCloseModal} />
+         {isLoginModalOpen && <LoginModal onClose={handleCloseModal} />}
       </header>
    );
 };

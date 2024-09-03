@@ -6,42 +6,41 @@ import './index.scss';
 
 const ShopItem = ({ product }) => {
    const dispatch = useDispatch();
-   const cartItems = useSelector((state) => state.cart.items);
-   const [isInCart, setIsInCart] = useState(cartItems.some(item => item.id === product.id));
-   const currentItem = cartItems.find(item => item.id === product.id);
+   const { items } = useSelector((state) => state.cart);
+
+   const { id, title, price, image } = product;
+   const currentItem = items.find(({ id: itemId }) => itemId === id);
 
    const addToCartHandler = () => {
       dispatch(addItemToCart({
-         id: product.id,
-         title: product.title,
-         price: product.price,
-         image: product.images?.[0] || 'fallback-image-url.jpg',
+         id,
+         title,
+         price,
+         image: image || 'fallback-image-url.jpg',
       }));
-      setIsInCart(true);
+
       toast.success('Item added to cart!', {
          position: "top-right",
          autoClose: 1500,
       });
    };
 
-   const increaseQuantityHandler = () => {
-      dispatch(increaseItemQuantity(product.id));
-   };
+   const increaseQuantityHandler = () => dispatch(increaseItemQuantity(product.id));
 
    const decreaseQuantityHandler = () => {
-      dispatch(decreaseItemQuantity(product.id));
+      dispatch(decreaseItemQuantity(id));
    };
 
    const removeItemHandler = () => {
-      dispatch(removeItemFromCart(product.id));
-      setIsInCart(false);
-   };
+      dispatch(removeItemFromCart(id));
 
+   };
+   const isInCart = items.some(item => item.id === product.id)
    return (
       <div className="item">
-         <img src={product.images?.[0]} alt={product.title} className="item__image" />
-         <h2 className="item__title">{product.title}</h2>
-         <p className="item__price">${product.price}</p>
+         <img src={image} alt={title} className="item__image" />
+         <h2 className="item__title">{title}</h2>
+         <p className="item__price">${price}</p>
 
          {isInCart ? (
             <div className="item__quantity-controls">
@@ -54,6 +53,7 @@ const ShopItem = ({ product }) => {
             <button className="item__button" onClick={addToCartHandler}>Add to Cart</button>
          )}
       </div>
+
    );
 };
 

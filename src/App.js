@@ -11,8 +11,10 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
+  const isProduction = process.env.NODE_ENV === 'production';
+  const basename = isProduction ? '/clothing-store' : '';
   return (
-    <Router>
+    <Router basename={basename}>
       <Header />
       <Routes>
         <Route path="/" element={<MainPage />} />
